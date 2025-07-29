@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import taskRoutes from './routes/tasks.routes.js';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
+import executiveRoutes from './routes/executives.routes.js';
 
 dotenv.config();
 
@@ -14,5 +15,6 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/tasks', taskRoutes); // All task-related routes
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+app.use('/api/executives', executiveRoutes);
 
 export default app;
