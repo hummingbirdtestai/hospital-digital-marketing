@@ -8,6 +8,93 @@ servers:
   - url: http://localhost:3000/api
 
 paths:
+  /executives:
+    post:
+      summary: Create a new executive
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+      responses:
+        '201':
+          description: Executive created
+        '400':
+          description: Invalid input
+    get:
+      summary: List all executives
+      responses:
+        '200':
+          description: List of executives
+        '500':
+          description: Server error
+
+  /executives/{id}:
+    get:
+      summary: Get executive by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: UUID of the executive
+      responses:
+        '200':
+          description: Executive details
+        '404':
+          description: Executive not found
+
+    patch:
+      summary: Update an executive
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: UUID of the executive
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+      responses:
+        '200':
+          description: Executive updated
+        '400':
+          description: Update failed
+
+    delete:
+      summary: Delete an executive
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Executive deleted
+        '400':
+          description: Delete failed
+
   /tasks/today/{executiveId}:
     get:
       summary: Get today's tasks for a specific executive
