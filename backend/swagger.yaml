@@ -1,0 +1,124 @@
+openapi: 3.0.0
+info:
+  title: Hospital Digital Marketing Task Tracker API
+  version: 1.0.0
+  description: API documentation for managing daily digital marketing tasks of hospital executives.
+
+servers:
+  - url: http://localhost:3000/api
+
+paths:
+  /tasks/today/{executiveId}:
+    get:
+      summary: Get today's tasks for a specific executive
+      parameters:
+        - in: path
+          name: executiveId
+          required: true
+          schema:
+            type: string
+          description: UUID of the executive
+      responses:
+        '200':
+          description: List of today's tasks
+        '500':
+          description: Server error
+
+  /tasks/date/{date}/{executiveId}:
+    get:
+      summary: Get tasks by date for a specific executive
+      parameters:
+        - in: path
+          name: date
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Date in YYYY-MM-DD format
+        - in: path
+          name: executiveId
+          required: true
+          schema:
+            type: string
+          description: UUID of the executive
+      responses:
+        '200':
+          description: List of tasks for the date
+        '500':
+          description: Server error
+
+  /tasks/update/{taskId}:
+    patch:
+      summary: Update task status, comment, hours, etc.
+      parameters:
+        - in: path
+          name: taskId
+          required: true
+          schema:
+            type: string
+          description: UUID of the task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [not_started, in_progress, done]
+                comment:
+                  type: string
+                comment_tag:
+                  type: string
+                actual_hours:
+                  type: number
+      responses:
+        '200':
+          description: Task updated successfully
+        '500':
+          description: Server error
+
+  /tasks/upload/{taskId}:
+    post:
+      summary: Upload a proof file for a task
+      parameters:
+        - in: path
+          name: taskId
+          required: true
+          schema:
+            type: string
+          description: UUID of the task
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Upload successful
+        '400':
+          description: No file uploaded
+        '500':
+          description: Upload failed
+
+  /tasks/executives/{id}/performance-summary:
+    get:
+      summary: Get performance summary of an executive
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Executive UUID
+      responses:
+        '200':
+          description: Summary of tasks, completion %, and avg hours
+        '500':
+          description: Server error
