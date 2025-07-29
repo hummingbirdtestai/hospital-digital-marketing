@@ -1,10 +1,12 @@
+// utils/fileUpload.js
 import { supabase } from '../services/supabaseClient.js';
 
 export async function uploadProof(taskId, fileBuffer, fileName, mimeType) {
   const { data, error } = await supabase.storage
     .from('uploads')
-    .upload(\proofs/${taskId}/${fileName}\, fileBuffer, {
-      contentType: mimeType
+    .upload(`proofs/${taskId}/${fileName}`, fileBuffer, {
+      contentType: mimeType,
+      upsert: true
     });
 
   if (error) throw error;
